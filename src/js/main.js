@@ -1,24 +1,80 @@
-			var scene = new THREE.Scene();
-			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+var container, scene, renderer, camera, light, clock, loader;
+    var WIDTH, HEIGHT, VIEW_ANGLE, ASPECT, NEAR, FAR;
 
-			var renderer = new THREE.WebGLRenderer();
-			renderer.setSize( window.innerWidth, window.innerHeight );
-			document.body.appendChild( renderer.domElement );
+    container = document.querySelector('.viewport');
 
-			var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-			var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-			var cube = new THREE.Mesh( geometry, material );
-			scene.add( cube );
+    clock = new THREE.Clock();
 
-			camera.position.z = 5;
+    WIDTH = window.innerWidth,
+    HEIGHT = window.innerHeight;
 
-			var render = function () {
-				requestAnimationFrame( render );
+    VIEW_ANGLE = 45,
+    ASPECT = WIDTH / HEIGHT,
+    NEAR = 1,
+    FAR = 10000;
 
-				cube.rotation.x += 0.1;
-				cube.rotation.y += 0.1;
+    scene = new THREE.Scene();
 
-				renderer.render(scene, camera);
-			};
+    renderer = new THREE.WebGLRenderer({antialias: true});
 
-			render();
+    renderer.setSize(WIDTH, HEIGHT);
+    renderer.shadowMapEnabled = true;
+    renderer.shadowMapSoft = true;
+    renderer.shadowMapType = THREE.PCFShadowMap;
+    renderer.shadowMapAutoUpdate = true;
+
+    container.appendChild(renderer.domElement);
+
+    camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
+
+    camera.position.set(0, 100, 300);
+    camera.rotation.x = -Math.PI / 12;
+
+    scene.add(camera);
+
+    light = new THREE.DirectionalLight(0xffffff);
+
+    light.position.set(0, 100, 60);
+    light.castShadow = true;
+    light.shadowCameraLeft = -60;
+    light.shadowCameraTop = -60;
+    light.shadowCameraRight = 60;
+    light.shadowCameraBottom = 60;
+    light.shadowCameraNear = 1;
+    light.shadowCameraFar = 1000;
+    light.shadowBias = -.0001
+    light.shadowMapWidth = light.shadowMapHeight = 1024;
+    light.shadowDarkness = .7;
+
+    scene.add(light);
+
+    loader = new THREE.JSONLoader();
+    var mesh;
+    loader.load('/assets/models/car.js', function (geometry, materials) {
+      var material = new THREE.MeshLambertMaterial({
+        map: THREE.ImageUtils.loadTexture('/assets/models/textures/gtare.jpg'),
+        colorAmbient: [0.480000026226044, 0.480000026226044, 0.480000026226044],
+        colorDiffuse: [0.480000026226044, 0.480000026226044, 0.480000026226044],
+        colorSpecular: [0.8999999761581421, 0.8999999761581421, 0.8999999761581421]
+      });
+
+      mesh = new THREE.Mesh(
+        geometry,
+        material
+      );
+
+      mesh.receiveShadow = true;
+      mesh.castShadow = true;
+      mesh.rotation.y = -Math.PI/5;
+
+      scene.add(mesh);
+      render();
+    });
+
+    function render() {
+     var time = clock.getElapsedTime();
+     mesh.rotation.y += .01;
+
+     renderer.render(scene, camera);
+     requestAnimationFrame(render);
+    }

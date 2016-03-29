@@ -11,7 +11,7 @@ var concat = require('gulp-concat');
 var notify = require('gulp-notify');
 
 // Static Server + watching scss/html files
-gulp.task('serve', ['sass', 'scripts', 'vendor', 'templates'], function() {
+gulp.task('serve', ['sass', 'scripts', 'vendor', 'templates', 'assets'], function() {
 
     browserSync.init({
         server: "./dist"
@@ -52,6 +52,12 @@ gulp.task('vendor', function() {
     .pipe(gulp.dest('dist/js'))
     .pipe(notify({ message: 'Vendor task complete' }))
     .pipe(browserSync.stream());
+});
+
+gulp.task('assets', function() {
+  return gulp.src('src/assets/**/**/*')
+    .pipe(gulp.dest('dist/assets'))
+    .pipe(notify({ message: 'Assets task complete' }));
 });
 
 gulp.task('templates', function() {

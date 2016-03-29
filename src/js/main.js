@@ -50,9 +50,9 @@ var container, scene, renderer, camera, light, clock, loader;
 
     loader = new THREE.JSONLoader();
     var mesh;
-    loader.load('/assets/models/car.js', function (geometry, materials) {
+    loader.load('./assets/models/car.js', function (geometry, materials) {
       var material = new THREE.MeshLambertMaterial({
-        map: THREE.ImageUtils.loadTexture('/assets/models/textures/gtare.jpg'),
+        map: THREE.ImageUtils.loadTexture('./assets/models/textures/gtare.jpg'),
         colorAmbient: [0.480000026226044, 0.480000026226044, 0.480000026226044],
         colorDiffuse: [0.480000026226044, 0.480000026226044, 0.480000026226044],
         colorSpecular: [0.8999999761581421, 0.8999999761581421, 0.8999999761581421]

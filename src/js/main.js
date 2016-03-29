@@ -1,15 +1,3 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Rotating Face</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
-    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  </head>
-  <body>
-      <script src="js/three.min.js"></script>
-		<script>
 			var scene = new THREE.Scene();
 			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
 
@@ -34,7 +22,3 @@
 			};
 
 			render();
-
-		</script>
-  </body>
-</html>

@@ -73,7 +73,24 @@ var container, scene, renderer, camera, light, clock, loader;
 
     function render() {
      var time = clock.getElapsedTime();
-     mesh.rotation.y += .01;
+
+     window.ondevicemotion = function(event) {
+        var accelerationX = event.accelerationIncludingGravity.x/100;
+        var accelerationY = event.accelerationIncludingGravity.y/100;
+        var accelerationZ = event.accelerationIncludingGravity.z/100;
+
+        if(accelerationY > 0) {
+            mesh.rotation.x -= -accelerationY;
+        } else {
+            mesh.rotation.x += accelerationY;
+        }
+
+        if(accelerationX > 0) {
+            mesh.rotation.y -= -accelerationX;
+        } else {
+            mesh.rotation.y += accelerationX;
+        }
+     }
 
      renderer.render(scene, camera);
      requestAnimationFrame(render);
